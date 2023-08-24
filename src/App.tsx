@@ -1,150 +1,63 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-  styled,
-} from "@mui/material";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import { Box, Button, Grid, Paper, Typography, styled, useMediaQuery } from "@mui/material";
+import { FormProvider, useForm } from "react-hook-form";
 import { userRegisterSchema } from "./schemas/registerSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { PrimaryInputType } from "./interfaces/primaryInputProps";
 import PrimaryInput from "./components/PrimaryInput";
 
-
 function App() {
-  const defaultDateValue = new Date();
-
   const methods = useForm({
     resolver: yupResolver(userRegisterSchema),
   });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const onSubmit = (data: PrimaryInputType) => {
-    console.log('ola')
-    console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data));
   };
 
+  const isScreenAbove900px = useMediaQuery('(min-width: 900px)');
 
   return (
     <FormProvider {...methods}>
       <Main>
         <Paper elevation={20}>
-         
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Box px={3} py={2}>
               <Typography variant="h4" align="center" margin="dense">
                 Cadastro
               </Typography>
-              <Grid container spacing={1}>
-                <PrimaryInput
-                  name="nome"
-                  control={control}
-                  defaultValue=""
-                  label="Nome completo"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.nome?.message}
-                  error={!!errors.nome}
-                />
-                <PrimaryInput
-                  name="email"
-                  control={control}
-                  defaultValue=""
-                  label="Email"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.email?.message}
-                  error={!!errors.email}
-                />
-                <Grid item xs={12} sm={12}>
-                  <Controller
-                    name="nascimento"
-                    control={control}
-                    defaultValue={defaultDateValue}
-                    render={({ field }) => (
-                      <TextField
-                        id="date"
-                        type="date"
-                        label="Data de nascimento"
-                        margin="dense"
-                        variant="outlined"
-                        fullWidth
-                        error={!!errors.nascimento}
-                        helperText={errors.nascimento?.message}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        {...field}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Typography align="left" margin="dense">
-                  Endereço
-                </Typography>
-                <PrimaryInput
-                  name="endereco.estado"
-                  control={control}
-                  defaultValue=""
-                  label="Estado"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.endereco?.estado?.message}
-                  error={!!errors.endereco?.estado}
-                />
+              <PrimaryInput name="nome" label="Nome" />
+              <PrimaryInput name="email" label="Email" />
+              <PrimaryInput name="cpf" label="Cpf" />
               <PrimaryInput
-                  name="endereco.cidade"
-                  control={control}
-                  defaultValue=""
-                  label="Cidade"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.endereco?.cidade?.message}
-                  error={!!errors.endereco?.cidade}
-                />
-                <PrimaryInput
-                  name="endereco.rua"
-                  control={control}
-                  defaultValue=""
-                  label="Rua"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.endereco?.rua?.message}
-                  error={!!errors.endereco?.rua}
-                />
-                <PrimaryInput
-                  name="endereco.numero"
-                  control={control}
-                  defaultValue={0}
-                  label="numero"
-                  margin="dense"
-                  variant="outlined"
-                  fullWidth
-                  helperText={errors.endereco?.numero?.message}
-                  error={!!errors.endereco?.numero}
-                />
+                name="nascimento"
+                label={"Data"}
+                type={"date"}
+                InputLabelProps={{ shrink: true }}
+              />
+              <Typography align="center" margin="dense"  marginTop={2}>
+                Endereço
+              </Typography>
+              <Grid container justifyContent={"center"} marginBottom={2}>
+                <Grid xs={isScreenAbove900px ? 12 : 5.5} sm={isScreenAbove900px ? 12 : 5.5} >
+                  <PrimaryInput name="endereco.estado" label="Estado" />
+                </Grid>
+                <Grid sm={isScreenAbove900px ? 12 : 5.5} xs={isScreenAbove900px ? 12 : 5.5} marginLeft={isScreenAbove900px ? 0 : 2}>
+                  <PrimaryInput name="endereco.cidade" label="Cidade" />
+                </Grid>
+                <Grid xs={isScreenAbove900px ? 12 : 8.5} sm={isScreenAbove900px ? 12 : 8} >
+                  <PrimaryInput name="endereco.rua" label="Rua" />
+                </Grid>
+                <Grid xs={isScreenAbove900px ? 12 : 3} sm={isScreenAbove900px ? 12 : 3} marginLeft={isScreenAbove900px ? 0 : 2}>
+                  <PrimaryInput name="endereco.numero" label="Numero" />
+                </Grid>
               </Grid>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  Registrar
-                </Button>
+              <Button variant="contained" color="primary" type="submit">
+                Registrar
+              </Button>
             </Box>
+          </form>
         </Paper>
       </Main>
     </FormProvider>
