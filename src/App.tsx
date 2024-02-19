@@ -1,9 +1,9 @@
 import { Box, Button, Grid, Paper, Typography, styled, useMediaQuery } from "@mui/material";
 import { FormProvider, useForm } from "react-hook-form";
 import { userRegisterSchema } from "./schemas/registerSchema";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { PrimaryInputType } from "./interfaces/primaryInputProps";
 import PrimaryInput from "./components/PrimaryInput";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 function App() {
   const methods = useForm({
