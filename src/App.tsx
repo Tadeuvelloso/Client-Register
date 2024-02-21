@@ -13,8 +13,20 @@ function App() {
   const { handleSubmit } = methods;
 
   const onSubmit = (data: PrimaryInputType) => {
-    console.log(JSON.stringify(data));
+
+    const formattedData = {
+      ...data,
+      cpf: String(data.cpf),
+      nascimento: data.nascimento.toISOString().split('T')[0], 
+      endereco: {
+        ...data.endereco,
+        numero: String(data.endereco.numero), 
+      }
+    };
+
+    console.log(formattedData);
   };
+  
 
   const isScreenAbove900px = useMediaQuery('(min-width: 900px)');
 
@@ -32,8 +44,8 @@ function App() {
               <PrimaryInput name="cpf" label="Cpf" />
               <PrimaryInput
                 name="nascimento"
-                label={"Data"}
-                type={"date"}
+                label="Data"
+                type="date"
                 InputLabelProps={{ shrink: true }}
               />
               <Typography align="center" margin="dense"  marginTop={2}>
